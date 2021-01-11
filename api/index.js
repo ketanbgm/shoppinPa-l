@@ -32,7 +32,7 @@ const response = require("../helpers/response")
                 )`;    
         let insertResult =  await executer.executeQuery([insertQuery])
         if(insertResult[0].insertId){
-        response.returnTrue(req, res, 'Success', insertResult[0]);
+        response.returnTrue(req, res, 'Success', {message : "Book Inserted successfully"});
         }else {
         response.returnFalse(req, res, 'Success', []);
 
@@ -47,7 +47,7 @@ const response = require("../helpers/response")
     let numRows;
     let numPerPage = parseInt(req.query.npp, 10) || 10;
     let page = parseInt(req.query.page, 10) || 1;
-    let getId = req.query.getId
+    let getId = req.params.id;
     let numPages;
     page = page - 1;
     let skip = page * numPerPage;
@@ -63,7 +63,6 @@ const response = require("../helpers/response")
     if(count_result[0][0].numRows > 0){
       numRows = count_result[0][0].numRows;
       numPages = Math.ceil(numRows / numPerPage);
-  
       let getQuery = `SELECT * FROM book  ${selectCase}  LIMIT ${limit}`;
       let queryResult =  await executer.executeQuery([getQuery])
       if(queryResult[0].length > 0){
@@ -92,28 +91,13 @@ const response = require("../helpers/response")
     }
   }
 
-  var getOneBook = async function(req, res,next){
-    var getId = req.query.getId;
-    if(!getId){
-      response.returnInvalid(req, res, 'Book id can not be empty', []);
-    }else {
-      let getQuery = `SELECT * FROM book where id = ${getId}`;
-      let result =  await executer.executeQuery([getQuery])
-      if(result[0].length > 0 ){
-        response.returnTrue(req, res, 'Success', result[0]);
-      } else {
-        response.returnTrue(req, res, 'No data found', []);
-      }
-    }
-  }
-
 
   var updateBook = async function(req, res, next){
     const author = req.body.author;
     const title = req.body.title;
     const isbn = req.body.isbn;
     const releaseDate = req.body.releaseDate;
-    const getId = req.body.getId;
+    const getId = req.params.id;
 
     var rdate = '';
     if(!getId){
@@ -133,24 +117,24 @@ const response = require("../helpers/response")
       let updateQuery = `update book set author ='${author}', title='${title}', isbn='${isbn}', release_date=${rdate} where id = ${getId}`;          
       let updateQueryResult =  await executer.executeQuery([updateQuery])
       if(updateQueryResult[0].affectedRows > 0){
-        response.returnTrue(req, res, 'Book Updated',  updateQueryResult[0] ); 
+        response.returnTrue(req, res, 'Book Updated',  {message : "Book Updated successfully"} ); 
       } else {
-        response.returnFalse(req, res, 'Book Updated',  [] ); 
+        response.returnInvalid(req, res, 'Book Update Failed',  []  ); 
       }
     }
   }
 
   var deleteOneBook = async function(req, res,next){
-    var getId = req.body.getId;
+    const getId = req.params.id;
     if(!getId){
       response.returnInvalid(req, res, 'Book id can not be empty', []);
     }else {
       let getQuery = `DELETE FROM book where id = ${getId}`;
       let result =  await executer.executeQuery([getQuery])
       if(result[0].affectedRows > 0 ){
-        response.returnTrue(req, res, 'Success', []);
+        response.returnTrue(req, res, 'Success', [{"message" : "Book deleted successfully"}]);
       } else {
-        response.returnFalse(req, res, 'Book not found', []);
+        response.returnNotFound(req, res, 'Book not found', []);
       }
     }
   }
@@ -160,7 +144,6 @@ const response = require("../helpers/response")
 var book = {
   createBook : createBook,
   getAllBooks : getAllBooks,
-  getOneBook : getOneBook,
   updateBook : updateBook,
   deleteOneBook : deleteOneBook
 };

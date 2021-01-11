@@ -30,8 +30,8 @@ $ npm test
 
 # Documentation
 
-### Apiary Documentation
+### Swagger Documentation
 
-URL : **https://shoopinpal.docs.apiary.io/**
+URL : **https://app.swaggerhub.com/apis-docs/ketanpradhan/shoppinpal-1.0/1.0#/**
 
 Postman Collection  : **https://www.getpostman.com/collections/3ff0dee07c847451ceac**
