@@ -23,9 +23,9 @@ createTable()
 
 const BASE_URL   = process.env.BASE_URL;
 console.log(BASE_URL)
-router.post(BASE_URL + 'createBook',crud.createBook)
-router.get(BASE_URL + 'getBook',crud.getAllBooks)
-router.put(BASE_URL + 'updateBook',crud.updateBook)
-router.delete(BASE_URL + 'deleteOneBook',crud.deleteOneBook)
+router.post(BASE_URL + 'book',crud.createBook)
+router.get(BASE_URL + 'book',crud.getAllBooks)
+router.put(BASE_URL + 'book',crud.updateBook)
+router.delete(BASE_URL + 'book',crud.deleteOneBook)
 
 module.exports = router;
