@@ -31,12 +31,11 @@ const response = require("../helpers/response")
                   (
                     '${author}', '${title}', '${isbn}', ${rdate}
                   )`;    
-          let insertResult =  await executer.executeQuery([insertQuery])
+          let insertResult =  await executer.executeQuery([insertQuery]);
           if(insertResult[0].insertId){
-          response.returnTrue(req, res, 'Success', {message : "Book Inserted successfully"});
+            response.returnTrue(req, res, 'Success', {message : "Book Inserted successfully",insertId : insertResult[0].insertId});
           }else {
-          response.returnFalse(req, res, 'Success', []);
-  
+            response.returnFalse(req, res, 'Success', []);
           }
         }
       }
